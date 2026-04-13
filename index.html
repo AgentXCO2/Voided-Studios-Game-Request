@@ -139,9 +139,7 @@ color:#888;
 
 <script>
 
-/* =========================
-   STORAGE (IMPORTANT FIX)
-========================= */
+/* STORAGE */
 let games = JSON.parse(localStorage.getItem("voided_games_final") || "[]");
 
 const PASSWORD = "VoidedStudios.Agent";
@@ -149,47 +147,51 @@ let loggedIn = false;
 
 const listDiv = document.getElementById("list");
 
-/* =========================
-   SAVE SYSTEM (PERSISTS DATA)
-========================= */
+/* SAVE */
 function save(){
 localStorage.setItem("voided_games_final", JSON.stringify(games));
 render();
 }
 
 /* =========================
-   SUBMIT GAME REQUEST (FIXED)
+   FIXED SUBMIT (TRIM + SAFE)
 ========================= */
 function submitGame(){
 
-const game = {
-name: document.getElementById("name").value,
-gameName: document.getElementById("gameName").value,
-email: document.getElementById("email").value,
-x: document.getElementById("x").value,
-type: document.getElementById("type").value,
-details: document.getElementById("details").value,
-time: new Date().toLocaleString(),
-status: "Pending"
-};
+const name = document.getElementById("name").value.trim();
+const gameName = document.getElementById("gameName").value.trim();
+const email = document.getElementById("email").value.trim();
+const x = document.getElementById("x").value.trim();
+const type = document.getElementById("type").value;
+const details = document.getElementById("details").value.trim();
 
-if(!game.name || !game.gameName || !game.email || !game.details){
+if(!name || !gameName || !email || !details){
 alert("Please fill all required fields");
 return;
 }
 
+const game = {
+name,
+gameName,
+email,
+x,
+type,
+details,
+time: new Date().toLocaleString(),
+status: "Pending"
+};
+
 games.unshift(game);
 save();
 
-/* YOUR MESSAGE */
 alert("Game Request submitted! You will receive an email on the application status.");
 }
 
-/* =========================
-   LOGIN
-========================= */
+/* LOGIN */
 function login(){
-if(document.getElementById("pass").value === PASSWORD){
+const pass = document.getElementById("pass").value;
+
+if(pass === PASSWORD){
 loggedIn = true;
 render();
 }else{
@@ -197,9 +199,7 @@ alert("Incorrect password");
 }
 }
 
-/* =========================
-   EMAIL SYSTEM (MAILTO)
-========================= */
+/* EMAIL (MAILTO SAME STYLE) */
 function sendEmail(item, status){
 
 const subject = `Voided Studios Game Request - ${status}`;
@@ -212,7 +212,7 @@ We have received your game request, and after a close look at it, we have decide
 Game Name: ${item.gameName}
 Game Type: ${item.type}
 
-What are the details/story of this game?
+Details:
 ${item.details}
 
 Thank you for putting your game request in with us!
@@ -222,18 +222,14 @@ window.location.href =
 `mailto:${item.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-/* =========================
-   ACCEPT / DECLINE
-========================= */
+/* STATUS */
 function setStatus(i, status){
 games[i].status = status;
 save();
 sendEmail(games[i], status);
 }
 
-/* =========================
-   ADMIN PANEL RENDER (FIXED + PERSISTENT)
-========================= */
+/* RENDER ADMIN */
 function render(){
 
 if(!loggedIn){
@@ -262,7 +258,6 @@ Type: ${g.type}<br>
 `).join("");
 }
 
-/* INITIAL LOAD */
 render();
 
 </script>
