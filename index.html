@@ -147,14 +147,14 @@ let loggedIn = false;
 
 const listDiv = document.getElementById("list");
 
-/* SAVE */
+/* SAVE SYSTEM */
 function save(){
 localStorage.setItem("voided_games_final", JSON.stringify(games));
 render();
 }
 
 /* =========================
-   FIXED SUBMIT (SAFE + TRIM)
+   SUBMIT GAME REQUEST
 ========================= */
 function submitGame(){
 
@@ -200,18 +200,16 @@ alert("Incorrect password");
 }
 
 /* =========================
-   FIXED EMAIL SYSTEM (GRAMMAR FIX)
+   EMAIL SYSTEM (OPTION 2 FIXED)
 ========================= */
 function sendEmail(item, status){
-
-const action = status === "accepted" ? "accept" : "decline";
 
 const subject = `Voided Studios Game Request - ${status}`;
 
 const body =
 `Hello ${item.name},
 
-We have received your game request, and after a close review, we have decided to ${action} it.
+After review, we have decided to accept your request.
 
 Game Name: ${item.gameName}
 Game Type: ${item.type}
@@ -226,14 +224,14 @@ window.location.href =
 `mailto:${item.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-/* STATUS */
+/* STATUS HANDLER */
 function setStatus(i, status){
 games[i].status = status;
 save();
 sendEmail(games[i], status);
 }
 
-/* RENDER ADMIN */
+/* ADMIN RENDER */
 function render(){
 
 if(!loggedIn){
