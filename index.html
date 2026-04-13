@@ -147,15 +147,13 @@ let loggedIn = false;
 
 const listDiv = document.getElementById("list");
 
-/* SAVE SYSTEM */
+/* SAVE */
 function save(){
 localStorage.setItem("voided_games_final", JSON.stringify(games));
 render();
 }
 
-/* =========================
-   SUBMIT GAME REQUEST
-========================= */
+/* SUBMIT */
 function submitGame(){
 
 const name = document.getElementById("name").value.trim();
@@ -200,16 +198,21 @@ alert("Incorrect password");
 }
 
 /* =========================
-   EMAIL SYSTEM (OPTION 2 FIXED)
+   FIXED EMAIL SYSTEM (NOW DYNAMIC)
 ========================= */
 function sendEmail(item, status){
+
+const action =
+status === "accepted"
+? "accept your request"
+: "decline your request";
 
 const subject = `Voided Studios Game Request - ${status}`;
 
 const body =
 `Hello ${item.name},
 
-After review, we have decided to accept your request.
+After review, we have decided to ${action}.
 
 Game Name: ${item.gameName}
 Game Type: ${item.type}
@@ -224,7 +227,7 @@ window.location.href =
 `mailto:${item.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-/* STATUS HANDLER */
+/* STATUS */
 function setStatus(i, status){
 games[i].status = status;
 save();
