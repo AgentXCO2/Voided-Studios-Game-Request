@@ -154,7 +154,7 @@ render();
 }
 
 /* =========================
-   FIXED SUBMIT (TRIM + SAFE)
+   FIXED SUBMIT (SAFE + TRIM)
 ========================= */
 function submitGame(){
 
@@ -199,15 +199,19 @@ alert("Incorrect password");
 }
 }
 
-/* EMAIL (MAILTO SAME STYLE) */
+/* =========================
+   FIXED EMAIL SYSTEM (GRAMMAR FIX)
+========================= */
 function sendEmail(item, status){
+
+const action = status === "accepted" ? "accept" : "decline";
 
 const subject = `Voided Studios Game Request - ${status}`;
 
 const body =
 `Hello ${item.name},
 
-We have received your game request, and after a close look at it, we have decided to ${status} it.
+We have received your game request, and after a close review, we have decided to ${action} it.
 
 Game Name: ${item.gameName}
 Game Type: ${item.type}
